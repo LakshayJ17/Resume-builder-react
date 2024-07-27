@@ -2,63 +2,93 @@ import React, { useState } from "react"
 import Practical from "./Components/PracInfo/Practical"
 import General from "./Components/GenInfo/General"
 import Education from "./Components/EduInfo/Education"
+import Skills from "./Components/SkillInfo/Skills"
+import Resume from "./Components/Resume/Resume"
 
 function App() {
   const [generalInfo, setGeneralInfo] = useState({
     name: '',
     email: '',
     phone: '',
-  });
+  })
 
   const [educationalInfo, setEducationalInfo] = useState({
     school: '',
     degree: '',
     gradYear: '',
-  });
+  })
+
+  const [skillsInfo, setSkillsInfo] = useState({
+    skill1: '',
+    skill2: '',
+    skill3: '',
+  })
 
   const [practicalInfo, setPracticalInfo] = useState({
     company: '',
     position: '',
     duration: '',
-  });
+  })
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleGeneralChange = (e) => {
     const { name, value } = e.target;
     setGeneralInfo((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleEducationalChange = (e) => {
     const { name, value } = e.target;
     setEducationalInfo((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
+    }))
+  }
+
+  const handleSkillsChange = (e) => {
+    const { name, value } = e.target;
+    setSkillsInfo((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
+  }
 
   const handlePracticalChange = (e) => {
     const { name, value } = e.target;
     setPracticalInfo((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('General Info:', generalInfo);
-    console.log('Educational Info:', educationalInfo);
-    console.log('Practical Info:', practicalInfo);
+    setIsSubmitted(true);
+  };
+
+  const handleEdit = () => {
+    setIsSubmitted(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
-      <form onSubmit={handleSubmit}>
+      {isSubmitted ? (
+        <Resume
+          generalInfo={generalInfo}
+          educationalInfo={educationalInfo}
+          skillsInfo={skillsInfo}
+          practicalInfo={practicalInfo}
+          handleEdit={handleEdit}
+        />
+      ) : (<form onSubmit={handleSubmit}>
         <General data={generalInfo} handleChange={handleGeneralChange} />
         <Education data={educationalInfo} handleChange={handleEducationalChange} />
+        <Skills data={skillsInfo} handleChange={handleSkillsChange} />
         <Practical data={practicalInfo} handleChange={handlePracticalChange} />
+
         <div className="flex justify-center mt-10">
           <button
             type="submit"
@@ -67,12 +97,13 @@ function App() {
             Submit
           </button>
         </div>
-      </form>
+      </form >
+      )
+      }
     </div>
-  );
-};
-
-export default App;
+  )
+}
+export default App
 
 
 
